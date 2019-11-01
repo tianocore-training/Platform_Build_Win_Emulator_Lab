@@ -11,7 +11,7 @@
 Note:
   PITCHME.md for UEFI / EDK II Training  Platform Build Win Lab
 
-  Copyright (c) 2018, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
 
   Redistribution and use in source (original document form) and 'compiled'
   forms (converted to PDF, epub, HTML and other formats) with or without
@@ -708,8 +708,29 @@ DEFINE WINSDK81x86_BIN    = c:\Program Files (x86)\Windows Kits\8.1\bin\x64
 
 ```
 
-
 Note:
+## Copy paste for RC Error
+```
+# Microsoft Visual Studio 2013 Professional Edition
+DEFINE WINSDK8_BIN       = c:\Program Files\Windows Kits\8.1\bin\x86\
+DEFINE WINSDK8x86_BIN    = c:\Program Files (x86)\Windows Kits\8.1\bin\x64
+ 
+# Microsoft Visual Studio 2015 Professional Edition
+DEFINE WINSDK81_BIN       = c:\Program Files\Windows Kits\8.1\bin\x86\
+DEFINE WINSDK81x86_BIN    = c:\Program Files (x86)\Windows Kits\8.1\bin\x64
+
+```
+
+### RC FIX for VS 2017 at command prompt type > Set
+```
+ See what the value of WINSDK10_PREFIX is.  This is probably the problem
+ Search your directory "C:\Program Files (x86)\" for the file rc.exe
+ the one you want will be in  C:\Program Files (x86)\Windows Kits\10\bin\x86
+ see below for the define: 
+  From : DEFINE WINSDK10_BIN       = ENV(WINSDK10_PREFIX)DEF(VS2017_HOST)
+  to : DEFINE WINSDK10_BIN       = C:\Program Files (x86)\Windows Kits\10\bin\x86
+```
+
 ---
 @title[Build Error- C1041 ]
 <p align="right"><span class="gold" ><b>Build Error: fatal error C1041: </b></span></p>
