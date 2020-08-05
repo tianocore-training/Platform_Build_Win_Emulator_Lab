@@ -8,10 +8,14 @@
 
 <br>
 <span style="font-size:0.75em" ><a href='http://www.tianocore.org'>tianocore.org</a></span>
+<br>
+<span style="font-size:0.75em" >See also <a href="https://github.com/tianocore-training/Platform_Build_Win_Emulator_Lab/blob/master/Lab_guide.md">Lab_Guide.md</a> for Copy & Paste Examples in Labs
+
+
 Note:
   PITCHME.md for UEFI / EDK II Training  Platform Build Win Lab
 
-  Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
 
   Redistribution and use in source (original document form) and 'compiled'
   forms (converted to PDF, epub, HTML and other formats) with or without
@@ -169,79 +173,150 @@ Note:
 
 
 ---?image=assets/images/binary-strings-black2.jpg
-@title[Lab 1 -Build OVMF Section]
+@title[Lab 1 -Build Emulator Section]
 <br><br><br><br><br>
 ## <span class="gold"  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Build Emulator</span>
 <span style="font-size:0.9em" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setup EmulatorPkg to build and run emulation <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w/ Windows</span>
 
-
-
 ---
-@title[Optional - Downloading the Edk II Source]
-<p align="right"><span class="gold" ><b>Download the Edk II Source&nbsp;&nbsp;<i>- Optional</i></b></span></p>
+@title[Prerequisites]
+<p align="right"><span class="gold" >@size[1.1em](<b> Prerequisites </b>)</span><br>
+<span style="font-size:0.75em;" >- Done Before Class  </span></p>
+
+<ul style="list-style-type:disc; line-height:0.75;">
+<li><span style="font-size:0.7em">Windows 10: &nbsp;&nbsp; @fa[windows gp-bullet-cyan] </span></li>
+<ul style="list-style-type:disc; line-height:0.7;">
+  <li><span style="font-size:0.65em">Continuous Integration (CI) - Stuart CI Build with  Visual Studio VS2017 or VS2019  </span></li>
+  <li><span style="font-size:0.65em">Non-Stuart CI - Visual Studio VS2015, VS2017 or VS2019  </span></li>
+  <li><span style="font-size:0.65em">Windows SDK (for rc) & Windows WDK (for Capsules) </span></li>
+</ul>
+
+<li><span style="font-size:0.75em">Python 3.7.x or greater and /Scripts directories on Path: <a href="https://www.python.org/">Link</a> to download  </span></li>
+<li><span style="font-size:0.75em">Git for Windows on Path : <a href="http://git-scm.com/download/win">Link</a></span></li>
+<li><span style="font-size:0.75em">NASM for Win64 :<a href="https://www.nasm.us/pub/nasm/releasebuilds/2.12.02/win64/">Link</a> </span></li>
+</ul>
+
+@snap[north-east span-5 ]
+<br>
+<br>
+<br>
+<br>
+![VS_logo](/assets/images/Brand_Visual_Studio_Win_2019.png)
+<br>
+<br>
+<br>
+<br>
+@snapend
 
 
-<span style="font-size:0.9em" ><i>OPTIONAL</i> - Open a  “git” command prompt and create a source working directory</span>
-```
- C:\> mkdir WS
- C:\> cd WS
-```
+@snap[north-east span-17 ]
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+![Python_logo](/assets/images/python-logo@2x.png)
+@snapend
 
-<span style="font-size:0.8em" >OPTIONAL - Internet Proxies – (company Firewall used for example)</span>
 
-```
- C:\WS> git config --global https.proxy <proxyname>.domain.com:<port>
- C:\WS> git config --global http.proxy <proxyname>.domain.com:<port>
-```
+@snap[north span-5 ]
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+![git_logo](/assets/images/git_logo.png)
+@snapend
 
-<span style="font-size:0.8em" >OPTIONAL - Download edk2 source tree using Git command prompt</span>
-
-```
-  C:\WS> git clone --recursive  https://github.com/tianocore/edk2.git
-  C:\WS> git clone  https://github.com/tianocore/edk2-libc.git
- 
-
-```
-
-<span style="font-size:0.7em" ><b>@color[yellow](NOTE:)</b> Lab Material will have a different “edk2” </span>
 
 
 Note:
 
-OPTIONAL - Open a  “git” command prompt and create a source working directory
-<pre>
-- C:\> mkdir WS
-- C:\> cd WS
 
-- OPTIONAL - Internet Proxies – (company Firewall used for example)
+---?image=/assets/images/slides/Slide12.JPG
+@title[Create Work Space Directory]
+<p align="right"><span class="gold" >@size[1.1em](<b>Create Workspace Directory  </b>)</span><br>
+<span style="font-size:0.75em;" >  </span></p>
 
-- C:\WS> git config --global https.proxy <proxyname>.domain.com:<port>
-- C:\WS> git config --global http.proxy <proxyname>.domain.com:<port>
+@snap[north-west span-40 ]
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+@box[bg-black text-white rounded my-box-pad2  ](<p style="line-height:60% "><span style="font-size:0.9em;" ><br><br><br><br><br><br>&nbsp;</span></p>)
+@snapend
 
-- OPTIONAL - Download edk2 source tree using Git command prompt
-- C:\WS> git clone https://github.com/tianocore/edk2.git
+@snap[north-west span-50 ]
+<br>
+<br>
+<p style="line-height:70%" align="left" ><span style="font-size:0.8em;" >
+Open Windows Command Prompt <br><br>
+Make new directory for Workspace: 
+</span></p>
+<p style="line-height:45%" align="left" ><span style="font-size:0.54em; font-family:Consolas;" ><br><br><br>&nbsp;&nbsp;
+ $ cd / <br>&nbsp;&nbsp;
+ $ Mkdir FW<br>&nbsp;&nbsp;
+ $ cd FW<br>&nbsp;&nbsp;
+ $ Mkdir edk2-ws<br>&nbsp;&nbsp;
+ $ cd edk2-ws<br>&nbsp;&nbsp;
+</span></p>
 
-</pre>
+@snapend
 
-- NOTE: Lab Material will have a different “edk2”
+Note:
 
-
----?image=assets/images/binary-strings-black2.jpg
-@title[Setup Lab Material sub Section]
-<br><br><br><br><br>
-## <span class="gold"  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setup Lab Material </span>
-<span style="font-size:0.9em" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lab_Material_FW.zip</span>
+---
+@title[Download the EDK II Source Code ]
+<p align="right"><span class="gold" >@size[1.1em](<b>Download the EDK II Source Code  </b>)</span><br>
+<span style="font-size:0.75em;" >  </span></p>
+<p style="line-height:80%" align="left" ><span style="font-size:0.9em;" >
+Download the open source EDK II from Github &nbsp;@fa[github gp-bullet-white]
+</span></p>
+<p style="line-height:70%" align="left" ><span style="font-size:0.78em;" >
+From the command prompt use “git clone” to download 
+</span></p>
+```bash
+C:\FW\edk2-WS> git clone https://github.com/tianocore-training/edk2.git
+C:\FW\edk2-WS> git clone https://github.com/tianocore/edk2-libc.git 
+ 
+```
+<br>
+<p style="line-height:70%" align="left" ><span style="font-size:0.78em;" ><br>
+Download the Submodules and Checkout the Lab Branch
+</span></p>
+```bash
+C:\FW\edk2-wS> cd edk2
+C:\FW\edk2-wS\edk2> git checkout LabBranch
+C:\FW\edk2-wS\edk2> git submodule update –-init
+C:\FW\edk2-wS> cd ..
+ 
+ 
+```
+ 
 
 ---
 @title[Download Lab_Material_FW -getting the Source ]
-### <p align="right"><span class="gold" >Download Lab Material</span><br></span></p>
-<span style="font-size:0.9em" >Download the Lab_Material_FW.zip from : </span> @fa[github gp-bullet-white] <span style="font-size:0.7em"><a href="https://github.com/tianocore-training/Lab_Material_FW/archive/master.zip">github.com Lab_Matrial_FW.zip</a></span><br>
+<p align="right"><span class="gold" >@size[1.1em](<b>Download Lab Material  </b>)</span><br>
+<span style="font-size:0.75em;" >  </span></p>
+<p style="line-height:80%" align="left" ><span style="font-size:0.85em" >Download the Lab_Material_FW.zip from : </span> @fa[github gp-bullet-white] 
+<span style="font-size:0.7em"><a href="https://github.com/tianocore-training/Lab_Material_FW/archive/master.zip">github.com Lab_Matrial_FW.zip</a>
+</span></p>
 <br>
-<span style="font-size:0.9em" >OR<br>Use `git clone` to download the Lab_Material_FW<span>
+<span style="font-size:0.85em" >OR<br>Use "git clone" to download the Lab_Material_FW<span>
 ```bash
 C:\> git clone https://github.com/tianocore-training/Lab_Material_FW.git
 ```
-<span style="font-size:0.9em" >Directory Lab_Material_FW will be created</span>
+<span style="font-size:0.85em" >Directory Lab_Material_FW will be created</span>
 ```
    FW 
     - Documentation 
@@ -255,7 +330,7 @@ C:\> git clone https://github.com/tianocore-training/Lab_Material_FW.git
 
 Note:
 
----?image=/assets/images/slides/Slide14.JPG
+---?image=/assets/images/slides/Slide15.JPG
 @title[Build  Edk2 -getting the Source ]
 <p align="right"><span class="gold" >@size[1.1em](<b>Build EDK II  </b>)</span><br>
 <span style="font-size:0.75em;" >– Extract the Source  </span></p>
@@ -264,7 +339,7 @@ Note:
 <br>
 <br>
 <br>
-<p style="line-height:70%" align="left"><span style="font-size:0.75em;  " >1. Extract the Downloaded <font face="Consolas">Lab_Material_FW-master.zip to C:\ </font> </span></p>
+<p style="line-height:70%" align="left"><span style="font-size:0.75em;  " >Extract the Downloaded <font face="Consolas">Lab_Material_FW-master.zip to C:\ </font> </span></p>
 <br>
 @snapend
 
@@ -273,17 +348,18 @@ Note:
 Note:
 Extract the Downloaded Lab_Material_FW.zip to Home (this will create a directory FW )
 
----?image=/assets/images/slides/Slide15.JPG
+---?image=/assets/images/slides/Slide16.JPG
 @title[Build  Edk2 -getting the Source 02]
 <p align="right"><span class="gold" >@size[1.1em](<b>Build EDK II  </b>)</span><br>
 <span style="font-size:0.75em;" > - Copy edk2-ws </span></p>
 
 @snap[north-west span-100 ]
 <br>
-<p style="line-height:70%" align="left" ><span style="font-size:0.7em;" >2. Open a VS command prompt <br><br> 3. 
-Create a working space directory "FW" <br>
-<span style="background-color: #000000"><font face="Consolas">@size[.7em](&nbsp;&nbsp; C:&bsol;&gt; mkdir FW &nbsp;&nbsp;&nbsp;&nbsp;) </font></span>
-<br><br>4. From the downloaded Lab_Material_FW folder, <b>copy</b> and <b>paste</b> folder <font face="Consolas">"..\edk2-ws" to "C:/FW"</font>
+<br>
+<br>
+<p style="line-height:70%" align="left" ><span style="font-size:0.7em;" >From the downloaded Lab_Material_FW folder, 
+<b>copy</b> and  <b>paste</b> folder "<font face="Consolas">..\edk2-ws</font>" to "<font face="Consolas">C:/FW</font>" <br>
+    &nbsp;<i>Note</i>: Overwrite existing files and directories
 </span></p>
 
 @snapend
@@ -291,15 +367,11 @@ Create a working space directory "FW" <br>
 
 
 Note:
-- Open a VS Command prompt   
-- Create a working  space directory “FW”
-  -   C:\> mkdir FW
-
 - From the downloaded Lab_Material_FW folder, copy and 
    -  paste folder “..\edk2-ws” to C:/FW
 
 
----?image=/assets/images/slides/Slide16.JPG
+---?image=/assets/images/slides/Slide17.JPG
 @title[Build  Edk2 -get Nasm]
 <p align="right"><span class="gold" >@size[1.1em](<b>Build EDK II  </b>)</span><br>
 <span style="font-size:0.75em;" > - Get Nasm </span></p>
@@ -307,7 +379,7 @@ Note:
 @snap[north-west span-70 ]
 <br>
 <br>
-<p style="line-height:70%" align="left" ><span style="font-size:0.7em;" >5.&nbsp;
+<p style="line-height:70%" align="left" ><span style="font-size:0.7em;" >
 Copy<font face="Consolas"> Nasm </font> directory to <font face="Consolas">C:&bsol;</font><br>
 @size[.8em](&lpar;creating <font face="Consolas">C:&bsol;Nasm</font> directory&rpar;)
 </span></p>
@@ -320,45 +392,101 @@ Copy Nasm directory to C:\
 (creating C:\Nasm directory)
 
 
----
-@title[Build  Edk2 -install Python]
-<p align="right"><span class="gold" >@size[1.1em](<b>Build EDK II  </b>)</span><br>
-<span style="font-size:0.75em;" > – Download and install Python </span></p>
 
 
-@snap[north-west span-60 ]
-<br>
-<br>
-<br>
-<br>
-<p style="line-height:80%" align="left"><span style="font-size:0.80em;  " >
- Download and install Python 3.7.x for Windows from: <br> https://www.python.org
-<br>
-<br>
+---?image=assets/images/binary-strings-black2.jpg
+@title[Stuart CI Build  sub Section]
+<br><br><br><br><br><br>
+### <span class="gold"  >Stuart CI Build EmulatorPkg </span>
+<span style="font-size:0.9em" > @color[yellow](SKIP) if doing a Non-Stuart CI Build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+
+@snap[east span-20 ]
+![Stuart-ci](/assets/images/Stuart-CI.png
+@snapend
+
+---?image=/assets/images/slides/Slide20.JPG
+@title[Stuart CI Build  Edk2 ]
+<p align="right"><span class="gold" >@size[1.1em](<b>Stuart CI Build EDK II &nbsp;&nbsp;&nbsp;&nbsp; </b>)</span><br>
+<span style="font-size:0.75em;" ></span></p>
+
+<p style="line-height:70%" align="left" ><span style="font-size:0.75em;" >1. &nbsp;
+Install the pip requirements @size[.8em](&lpar;Note, Proxy option needed behind a firewall&rpar;)
 </span></p>
+```bash
+$ pip install --upgrade -r pip-requirements.txt --proxy http://proxy-chain.intel.com:911 
+```
 
-<br>
-@snapend
+<p style="line-height:70%" align="left" ><span style="font-size:0.75em;" >2. &nbsp;
+Get the code dependencies @size[.8em](&lpar;done only when submodules change&rpar;)
+</span></p>
+```bash
+$ stuart_setup -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64
+```
 
-@snap[north-east span-45 ]
-<br>
-<br>
-<br>
-<br>
-<br>
-<a href="https://www.python.org">
-![python_logo](assets/images/python-logo@2x.png)</a>
+<p style="line-height:70%" align="left" ><span style="font-size:0.75em;" >3. &nbsp;
+Update other dependencies @size[.8em](&lpar;done on new VS Command Prompt&rpar;)
+</span></p>
+```bash
+$ stuart_update -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64
+```
 
-@snapend
+<p style="line-height:70%" align="left" ><span style="font-size:0.75em;" >4. &nbsp;
+Build the BaseTools @size[.8em](&lpar;done only when BaseTools change and first time&rpar;)
+</span></p>
+```bash
+$ python BaseTools\Edk2ToolsBuild.py -t <Your TAG>
+```
+<p style="line-height:70%" align="left" ><span style="font-size:0.75em;" >5. &nbsp;
+Compile the EmulatorPkg
+</span></p>
+```bash
+$ stuart_build -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64 BLD_*_ADD_SHELL_STRING=1
+```
+
+
+<p style="line-height:70%" align="left" ><span style="font-size:0.7em;" >
+Where "&lt;Your TAG&gt;" is either "VS2017" or "VS2018"
+</span></p>
 
 
 
 
 Note:
 
+---?image=/assets/images/slides/Slide21.JPG
+@title[Output from CI Stuart Build]
+<p align="right"><span class="gold" >@size[1.1em](<b>Output from CI Stuart Build  </b>)</span><br>
+<span style="font-size:0.75em;" ></span></p>
+
+
+@snap[north-east span-40  ]
+<p style="line-height:50%" align="right"><span style="font-size:0.8em" >
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Finished build
+</span></p>
+@snapend
+
+Note:
+
+
+
+---?image=assets/images/binary-strings-black2.jpg
+@title[Non-Stuart CI Build  sub Section]
+<br><br><br><br><br>
+### <span class="gold"  >Non-Stuart CI Build EmulatorPkg </span>
+<span style="font-size:0.9em" > @color[yellow](SKIP) if doing a Stuart CI Build &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+
+
 ---
-@title[Build  Edk2 -build BaseTools]
-<p align="right"><span class="gold" >@size[1.1em](<b>Build EDK II  </b>)</span><br>
+@title[Non-Stuart CI Build  Edk2 -build BaseTools]
+<p align="right"><span class="gold" >@size[1.1em](<b>Non-Stuart CI Build EDK II  </b>)</span><br>
 <span style="font-size:0.75em;" > – build <font face="Consolas">BaseTools</font></span></p>
 
 @snap[north-west span-100 ]
@@ -389,30 +517,21 @@ Building BaseTools only needs to be done once but setting up local environment a
 @snapend
 
 
-
-
 @snap[east span-40 fragment ]
 <br>
 <br>
 <br>
 <br>
-<p style="line-height:40%" align="left"><span style="font-size:02.80em;  " ><br><br>
+<p style="line-height:40%" align="left"><span style="font-size:02.80em;  " ><br>
 @color[yellow](&#8678;)
 </span></p>
 @snapend
 
+Note:
 
-
----?image=assets/images/binary-strings-black2.jpg
-@title[Build  sub Section]
-<br><br><br><br><br>
-## <span class="gold"  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Build EmulatorPkg </span>
-<span style="font-size:0.9em" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-
-
----?image=/assets/images/slides/Slide20.JPG
-@title[Build Edk2 -update target.txt]
-<p align="right"><span class="gold" >@size[1.1em](<b>Build EDK II  </b>)</span><br>
+---?image=/assets/images/slides/Slide23.JPG
+@title[Non-Stuart CI Build Edk2 -update target.txt]
+<p align="right"><span class="gold" >@size[1.1em](<b>Non-Stuart CI Build EDK II  </b>)</span><br>
 <span style="font-size:0.75em;" > – Update <font face="Consolas">Target.txt</font></span></p>
 
 @snap[north-west span-70 ]
@@ -502,16 +621,16 @@ Note:
   <li><span style="font-size:0.7em" >Open Visual Studio and create a “C++” project </span> </li>
   <li><span style="font-size:0.7em" > (This will take some time to install)</span> </li>
 </ul>  
-<p style="line-height:80%"><span style="font-size:0.8em" >2. If you get a BUILD Error: Check if  RC.Exe compiler not found is the error -<a href="https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/31" > here</a> </span> </p>
+<p style="line-height:80%"><span style="font-size:0.8em" >2. If you get a BUILD Error: Check if  RC.Exe compiler not found is the error -<a href="https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/35" > here</a> </span> </p>
 <p style="line-height:80%"><span style="font-size:0.8em" >3. If you get a BUILD Error: <font face="Consolas">fatal error C1041: cannot open program database</font> … Check 
-<a href="https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/32"> here</a>  </span> </p>
+<a href="https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/36"> here</a>  </span> </p>
 
 
 Note:
 
 
 
----?image=/assets/images/slides/Slide22.JPG
+---?image=/assets/images/slides/Slide25.JPG
 @title[Build Edk2 -build inside VS Prompt]
 <p align="right"><span class="gold" >@size[1.1em](<b>Build EDK II  </b>)</span><br>
 <span style="font-size:0.75em;" > – Inside VS Prompt</span></p>
@@ -526,14 +645,23 @@ Finished build
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
 </span></p>
 @snapend
 
 Note:
 - 
 
+---?image=assets/images/binary-strings-black2.jpg
+@title[Run the Emulator Section]
+<br><br><br><br><br>
+### <span class="gold"  >Run the Emulator </span>
+<span style="font-size:0.9em" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
 
----?image=/assets/images/slides/Slide23.JPG
+
+---?image=/assets/images/slides/Slide27.JPG
 @title[Build Edk2 -invoke emulator]
 <p align="right"><span class="gold" >@size[1.1em](<b>Invoke Emulation  </b>)</span><span style="font-size:0.75em;" ></span></p>
 
@@ -558,7 +686,7 @@ run <font face="Consolas">@color[yellow](WinHost.exe) </font> from:<br>&nbsp;&nb
 
 Note:
 
----?image=/assets/images/slides/Slide24.JPG
+---?image=/assets/images/slides/Slide28.JPG
 @title[Build Edk2 -exit emulator]
 <p align="right"><span class="gold" >@size[1.1em](<b>Emulator at Shell Prompt  </b>)</span><span style="font-size:0.75em;" ></span></p>
 
@@ -640,7 +768,7 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY 
 OF SUCH DAMAGE.
 
-Copyright (c) 2019, Intel Corporation. All rights reserved.
+Copyright (c) 2020, Intel Corporation. All rights reserved.
 **/
 
 ```
@@ -649,7 +777,7 @@ Copyright (c) 2019, Intel Corporation. All rights reserved.
 ---?image=assets/images/binary-strings-black2.jpg
 @title[Backup Section]
 <br><br><br><br><br>
-## <span class="gold"  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Back up</span>
+## <span class="gold"  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Backup</span>
 <span style="font-size:0.9em" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
 ---  
@@ -693,11 +821,11 @@ Note:
 @title[Build Error- RC.exe 02]
 <p align="right"><span class="gold" ><b>Build Error- RC.exe Cont...</b></span></p>
 
-<span style="font-size:0.9em" >Edit `Conf/tools_def.txt` </span><br>
-<p style="line-height:90%"><span style="font-size:0.9em" >Search for your installation of Visual Studio (2013 or 2015)</span></p>
+<span style="font-size:0.9em" ><b>Edit</b> `Conf/tools_def.txt` </span><br>
+<p style="line-height:90%"><span style="font-size:0.9em" >Search for your installation of Visual Studio (2013, 2015 or 2017)</span></p>
 <p style="line-height:90%"><span style="font-size:0.9em" >Update according to the path for where the RC.EXE is found </span></p>
 
-```
+```bash
 # Microsoft Visual Studio 2013 Professional Edition
 DEFINE WINSDK8_BIN       = c:\Program Files\Windows Kits\8.1\bin\x86\
 DEFINE WINSDK8x86_BIN    = c:\Program Files (x86)\Windows Kits\8.1\bin\x64
@@ -706,11 +834,18 @@ DEFINE WINSDK8x86_BIN    = c:\Program Files (x86)\Windows Kits\8.1\bin\x64
 DEFINE WINSDK81_BIN       = c:\Program Files\Windows Kits\8.1\bin\x86\
 DEFINE WINSDK81x86_BIN    = c:\Program Files (x86)\Windows Kits\8.1\bin\x64
 
+# Microsoft Visual Studio 2017 Professional Edition
+DEFINE WINSDK10_BIN       = C:\Program Files (x86)\Windows Kits\10\bin\x86
 ```
+
+<p style="line-height:90%"><span style="font-size:0.9em" >Copy and Paste RC error to `Tools_def.txt`
+<a href="https://github.com/tianocore-training/Platform_Build_Win_Emulator_Lab/blob/master/PITCHME.md#copy-paste-for-rc-error">link</a>
+</span></p>
+
 
 Note:
 ## Copy paste for RC Error
-```
+```bash
 # Microsoft Visual Studio 2013 Professional Edition
 DEFINE WINSDK8_BIN       = c:\Program Files\Windows Kits\8.1\bin\x86\
 DEFINE WINSDK8x86_BIN    = c:\Program Files (x86)\Windows Kits\8.1\bin\x64

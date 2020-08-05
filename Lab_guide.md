@@ -7,8 +7,9 @@
 <br>
 <a href='http://www.tianocore.org'>tianocore.org</a>
 
+
 <!---
- Lab_Guide.md for Platform Build Windows Emulator Lab
+ Lab_Guide.md for Platform Build Win Emulator Lab
 
   Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
 
@@ -37,6 +38,8 @@
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 -->
+
+
 ---  
 ## Slide 2  @title[Lesson Objective]
 
@@ -93,7 +96,7 @@ Note: <i>VS 2013 example, other version of VS maybe different</i>
 
 6. Right Click to open Windows dialog box 
 
-<font color="Red">Do not use any of the other<br> ".. Command Prompts" </font>
+<font color="Red"><b>Do not use any of the other</b><br> ".. Command Prompts" </font>
 
 
 
@@ -140,45 +143,56 @@ All Windows Labs use this short-cut to Build Edk II platforms and projects using
 
 
 ---
-## Slide 11  @title[Optional - Downloading the Edk II Source]
-<b>Download the Edk II Source<i>- Optional</i></b>
+## Slide 11  @title[Prerequisites - Done Before Class]
+<b>Prerequisites<br><i>- Done Before Class</i></b>
+- Windows 10:
+   - Continuous Integration (CI) - Stuart CI Build with  Visual Studio VS2017 or VS2019
+   - Non Stuart CI - Visual Studio VS2015, VS2017 or VS2019
+   - Windows SDK (for rc)
+   - Windows WDK (for Capsules)
+- Python 3.7.x or greater and /Scripts directories on Path: <a href="https://www.python.org/">Link</a> to download 
+- Git for Windows on Path : <a href="http://git-scm.com/download/win">Link</a>
+- NASM  for Win64 : <a href="https://www.nasm.us/pub/nasm/releasebuilds/2.12.02/win64/">Link</a>
 
 
-<i>OPTIONAL</i> - Open a  “git” command prompt and create a source working directory
-```
- C:\> mkdir WS
- C:\> cd WS
-```
 
-OPTIONAL - Internet Proxies – (company Firewall used for example)
 
-```
- C:\WS> git config --global https.proxy <proxyname>.domain.com:<port>
- C:\WS> git config --global http.proxy <proxyname>.domain.com:<port>
-```
+## Slide 12  @title[Create Work Space Directory]
+<b>Create Work Space Directory</b>
 
-OPTIONAL - Download edk2 source tree using Git command prompt
 
-```
-  C:\WS> git clone --recursive  https://github.com/tianocore/edk2.git
-  C:\WS> git clone  https://github.com/tianocore/edk2-libc.git
- 
+Open a  Windows command prompt <br>
+Make new directory for Work Space:
 
 ```
-
-<b><font color="red">NOTE:</font></b> Lab Material will have a different “edk2” 
-
-
+$ cd /
+$ Mkdir FW
+$ cd FW
+$ Mkdir edk2-ws
+$ cd edk2-ws
+```
 
 ---
-## Slide 12  @title[Setup Lab Material sub Section]
+## Slide 13  @title[Download the EDK II Source Code ]
 <br>
+### Download the EDK II Source Code
 
-## Setup Lab Material 
- Lab_Material_FW.zip
+```
+C:\FW\edk2-WS> git clone https://github.com/tianocore-training/edk2.git
+C:\FW\edk2-WS> git clone https://github.com/tianocore/edk2-libc.git
+
+```
+
+Download the Submodules and Checkout the Lab Branch
+```
+C:\FW\edk2-wS> cd edk2
+C:\FW\edk2-wS\edk2> git checkout LabBranch
+C:\FW\edk2-wS\edk2> git submodule update --init
+C:\FW\edk2-wS> cd ..
+```
 
 ---
-## Slide 13  @title[Download Lab_Material_FW -getting the Source ]
+## Slide 14  @title[Download Lab_Material_FW -getting the Source ]
 ### Download Lab Material<br>
 Download the Lab_Material_FW.zip from :  <a href="https://github.com/tianocore-training/Lab_Material_FW/archive/master.zip">github.com Lab_Matrial_FW.zip</a><br>
 <br>
@@ -203,38 +217,30 @@ Directory Lab_Material_FW will be created
 
 
 ---
-## Slide 14  @title[Build  Edk2 -getting the Source ]
+## Slide 15  @title[Build  Edk2 -getting the Source ]
 <b>Build EDK II  </b><br>
 
 – Extract the Source  
 
-1. Extract the Downloaded `Lab_Material_FW-master.zip to C:\ `
+Extract the Downloaded `Lab_Material_FW-master.zip to C:\ `
 
 
 Note:
 Extract the Downloaded Lab_Material_FW.zip to C:\ (this will create a directory FW )
 
 ---
-## Slide 15  @title[Build  Edk2 -getting the Source 02]
+## Slide 16  @title[Build  Edk2 -getting the Source 02]
 <b>Build EDK II  </b><br>
  - Copy edk2-ws 
 
 
-
-2. Open a VS command prompt
-
-3. Create a working space directory "FW" 
-
-```
-C:\> mkdir FW
-```
-
-4. From the downloaded Lab_Material_FW folder,<br> <b>copy</b> and <b>paste</b> folder `"..\edk2-ws" to "C:/FW"`
+From the downloaded Lab_Material_FW folder,<br> <b>copy</b> and <b>paste</b> folder `"..\edk2-ws"` to `"C:/FW"`
 
 
+<i>Note:</i> Overwrite existing files and directories
 
 ---
-## Slide 16  @title[Build  Edk2 -get Nasm]
+## Slide 17  @title[Build  Edk2 -get Nasm]
 <b>Build EDK II  </b><br>
  - Get Nasm 
 
@@ -243,19 +249,80 @@ Copy `Nasm` directory to `C:\`
 (creating `C:\Nasm` directory)
 
 
----
-## Slide 17  @title[Build  Edk2 -install Python]
-<b>Build EDK II  </b><br>
-– Download and install Python 
-
-
-Download and install Python 3.7.x for Windows from: <br> https://www.python.org
-<br>
-<br>
 
 ---
-## Slide 18  @title[Build  Edk2 -build BaseTools]
-<b>Build EDK II  </b><br>
+## Slide 18  @title[CI Stuart Build  sub Section]
+<br>
+
+### CI Stuart Build EmulatorPkg
+<b>SKIP</b> if doing Non-Stuart CI Build
+
+---
+## Slide 19  @title[Stuart CI Build Edk II]
+### <b>Stuart CI Build EDK II  </b><br>
+
+
+1. Install the pip requirements (Note, Proxy option needed behind a firewall)
+```
+$ pip install --upgrade -r pip-requirements.txt --proxy http://proxy-chain.intel.com:911 
+```
+2. Get the code dependencies (done only when submodules change)
+```
+$ stuart_setup -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64
+```
+3. Update other dependencies (done on new VS Command Prompt)
+```
+$ stuart_update -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64
+```
+4. Build the BaseTools (done only when BaseTools change and first time)
+```
+$ python BaseTools\Edk2ToolsBuild.py -t <Your TAG>
+```
+5. Compile the EmulatorPkg
+```
+$ stuart_build -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64 BLD_*_ADD_SHELL_STRING=1
+```
+Where "`<Your TAG>`" is either `VS2017` or `VS2018`
+
+
+---
+## Slide 20  @title[Output from CI Stuart Build]
+<b>Output from CI Stuart Build </b><br>
+
+```
+INFO - - Done -
+INFO - Build end time: 13:17:07, Jul.27 2020
+INFO - Build total time: 00:01:33
+INFO -
+INFO - ------------------------------------------------
+INFO - --------------Cmd Output Finished---------------
+INFO - --------- Running Time (mm:ss): 01:33 ----------
+INFO - ----------- Return Code: 0x00000000 ------------
+INFO - ------------------------------------------------
+PROGRESS - Running Post Build
+DEBUG - Plugin Success: Windows RC Path Support
+DEBUG - Plugin Success: Windows Visual Studio Tool Chain Support
+INFO - Writing BuildToolsReports to C:\FW\edk2-ws\edk2\Build\EmulatorX64\DEBUG_VS2017\BUILD_TOOLS_REPORT
+DEBUG - Plugin Success: Build Tools Report Generator
+PROGRESS - End time: 2020-07-27 13:17:07.515485  Total time Elapsed: 0:01:37
+SECTION - Log file is located at: C:\FW\edk2-ws\edk2\Build\BUILDLOG_EmulatorPkg.txt
+SECTION - Summary
+PROGRESS - Success
+```
+### Finshed Build
+
+---
+## Slide 21  @title[Non CI Stuart Build  sub Section]
+<br>
+
+### Non Stuart CI Build EmulatorPkg
+
+<b>SKIP</b> if doing Stuart CI Build
+
+
+---
+## Slide 22  @title[Build  Edk2 -build BaseTools]
+<b>Non Stuart CI Build EDK II  </b><br>
  – build `BaseTools`
  
 Open VS Command prompt & Cd to work space directory 
@@ -275,20 +342,13 @@ $> edksetup.bat Rebuild
 
 Building BaseTools only needs to be done once but setting up local environment and edksetup.bat needs to be done each new VS prompt session
 
- 
-
----
-## Slide 19  @title[Build  sub Section]
-<br>
-
-## Build EmulatorPkg 
-
+<font color="Red"><B> SKIP</b></font> if doing Stuart CI Build with VS2017 or VS2018
 
 
 ---
-## Slide 20  @title[Build Edk2 -update target.txt]
-<b>Build EDK II  </b><br>
- – Update `Target.txt`
+## Slide 23  @title[Non Stuart CI Build Edk2 -update target.txt]
+<b>Non Stuart CI Build EDK II  </b><br>
+ - Update `Target.txt`
 
 ### <b>EmulatorPkg</b>
 Invoke Edksetup.bat 
@@ -305,7 +365,7 @@ Update the following define statements
 ```
     TARGET_ARCH           = X64
 	. . .
-    TOOL_CHAIN_TAG        = <see table>
+    TOOL_CHAIN_TAG        = <see table below>
 ```
 
 Use the following for TOOL_CHAIN_TAG:
@@ -321,33 +381,39 @@ Use the following for TOOL_CHAIN_TAG:
 
 ### Build EmulatorPkg
 ```
-$> build –D ADD_SHELL_STRING -a X64
+$> build -D ADD_SHELL_STRING -a X64
 ```
 
 
 ---
-## Slide 21  @title[Possible Build Errors]
+## Slide 24  @title[Possible Build Errors]
 <b>Possible Build Errors </b>
 
-1. If you get a BUILD Error:  Error “C:/Program “ not found
+1. If you get a BUILD Error:  Error "C:/Program " not found
    - First check that you have opened Visual Studio and installed the “C++”  
-   - Open Visual Studio and create a “C++” project 
+   - Open Visual Studio and create a "C++" project 
    - (This will take some time to install)
 2.  If you get a BUILD Error: Check if  RC.Exe compiler not found is the error -<a href="https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/31" > here</a>
-3.  If you get a BUILD Error: fatal error C1041: cannot open program database … Check <a href="https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/32"> here</a> 
+3.  If you get a BUILD Error: fatal error C1041: cannot open program database . . . Check <a href="https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/32"> here</a> 
+
 
 ---
-## Slide 22  @title[Build Edk2 -build inside VS Prompt]
+## Slide 25  @title[Build Edk2 -build inside VS Prompt]
 <b>Build EDK II  </b><br>
-– Inside VS Prompt
+- Inside VS Prompt
 
 
 
 Finished build
 
+---
+## Slide 26  @title[Run the Emulator sub Section]
+<br>
+
+### Run the  EmulatorPkg
 
 ---
-## Slide 23  @title[Build Edk2 -invoke emulator]
+## Slide 27  @title[Build Edk2 -invoke emulator]
 <b>Invoke Emulation  </b>
 
 <br>
@@ -374,14 +440,14 @@ Notice 2 "GOP Window n" opened
 
 
 ---
-## Slide 24  @title[Build Edk2 -exit emulator]
+## Slide 28  @title[Build Edk2 -exit emulator]
 <b>Emulator at Shell Prompt  </b>
 
 Type: "Reset" to exit
 
 
 ---  
-## Slide 25  @title[Summary]
+## Slide 29  @title[Summary]
 ### Summary <br>
 
 - Pin Visual Studio Command Prompt to Windows Task Bar 
@@ -389,12 +455,12 @@ Type: "Reset" to exit
 - Run the Emulator in Windows
 
 ---
-## Slide 26  @title[Questions]
+## Slide 30  @title[Questions]
 <br>
 Questions
 
 ---
-## Slide 27  @title[return to main]
+## Slide 31  @title[return to main]
 <b>Return to Main Training Page</b>
 <br>
 <br>
@@ -406,13 +472,13 @@ Return to Training Table of contents for next presentation <a href="https://gith
 
 
 ---
-## Slide 28  @title[Logo Slide]
+## Slide 32  @title[Logo Slide]
 <br><br><br>
 
 
 
 ---
-## Slide 29  @title[Acknowledgements]
+## Slide 33  @title[Acknowledgements]
 #### Acknowledgements
 
 ```c++
@@ -447,13 +513,13 @@ Copyright (c) 2020, Intel Corporation. All rights reserved.
 
 
 ---
-## Slide 30  @title[Backup Section]
+## Slide 34  @title[Backup Section]
 <br><br><br><br><br>
 ## Back up
 
 
 ---  
-## Slide 31  @title[Build Errors]
+## Slide 35  @title[Build Errors]
 <br>
 <br>
 <br>
@@ -462,7 +528,7 @@ Copyright (c) 2020, Intel Corporation. All rights reserved.
 
 
 ---
-## Slide 32  @title[Build Error- RC.exe ]
+## Slide 36  @title[Build Error- RC.exe ]
 <b>Build Error- RC.exe </b>
 Because RC.Exe is not found, Error Message:
 
@@ -493,7 +559,7 @@ Edit `Conf/tools_def.txt`
 
 
 ---
-## Slide 33  @title[Build Error- RC.exe 02]
+## Slide 37  @title[Build Error- RC.exe 02]
 <b>Build Error- RC.exe Cont...</b>
 
 Edit `Conf/tools_def.txt` 
@@ -529,7 +595,7 @@ see below for the define:
 ```
 
 ---
-## Slide 34  @title[Build Error- C1041 ]
+## Slide 38  @title[Build Error- C1041 ]
 <b>Build Error: fatal error C1041: </b>
 Build Error from fatal error C1041: cannot open program database
 
