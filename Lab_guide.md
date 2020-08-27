@@ -282,7 +282,7 @@ $ python BaseTools\Edk2ToolsBuild.py -t <Your TAG>
 ```
 $ stuart_build -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64 BLD_*_ADD_SHELL_STRING=1
 ```
-Where "`<Your TAG>`" is either `VS2017` or `VS2018`
+Where "`<Your TAG>`" is either `VS2017` or `VS2019`
 
 
 ---
