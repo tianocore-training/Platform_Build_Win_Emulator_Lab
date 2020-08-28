@@ -176,6 +176,11 @@ $ cd edk2-ws
 ## Slide 13  @title[Download the EDK II Source Code ]
 <br>
 ### Download the EDK II Source Code
+Note:  if behind a firewall, set PROXYS FIRST
+```
+$ git config --global https.proxy=proxy.hf.intel.com:911
+$ git config --global http.proxy=proxy.hf.intel.com:911
+```
 
 ```
 C:\FW\edk2-WS> git clone https://github.com/tianocore-training/edk2.git
