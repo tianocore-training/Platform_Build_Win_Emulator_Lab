@@ -174,7 +174,7 @@ $ cd edk2-ws
 
 ---
 ## Slide 13  @title[Download the EDK II Source Code ]
-<br>
+
 ### Download the EDK II Source Code
 Note:  if behind a firewall, set PROXYS FIRST
 ```
