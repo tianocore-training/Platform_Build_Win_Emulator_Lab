@@ -265,27 +265,35 @@ Copy `Nasm` directory to `C:\`
 ---
 ## Slide 19  @title[Stuart CI Build Edk II]
 ### <b>Stuart CI Build EDK II  </b><br>
+1. CD C:\FW\Edk2-ws and run setup script to setup `WORKSPACE` and Packages path
+```
+$ cd C:\FW\edk2-ws
+$ Setenv.bat
+$ cd edk2
+```
 
+The following are invoked in C:\FW\edk2-ws\edk2 directory
 
-1. Install the pip requirements (Note, Proxy option needed behind a firewall)
+2. Install the pip requirements (Note, Proxy option needed behind a firewall) 
 ```
 $ pip install --upgrade -r pip-requirements.txt --proxy http://proxy-chain.intel.com:911 
 ```
-2. Get the code dependencies (done only when submodules change)
+3. Get the code dependencies (done only when submodules change)
 ```
 $ stuart_setup -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64
 ```
-3. Update other dependencies (done on new VS Command Prompt)
+4. Update other dependencies (done on new VS Command Prompt)
 ```
 $ stuart_update -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64
 ```
-4. Build the BaseTools (done only when BaseTools change and first time)
+5. Build the BaseTools (done only when BaseTools change and first time)
 ```
 $ python BaseTools\Edk2ToolsBuild.py -t <Your TAG>
 ```
-5. Compile the EmulatorPkg
+6. Compile the EmulatorPkg
 ```
-$ stuart_build -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64 BLD_*_ADD_SHELL_STRING=1
+$ stuart_build -c EmulatorPkg/PlatformCI/PlatformBuild.py TOOL_CHAIN_TAG=<Your TAG> -a X64 BLD_*_ADD_SHELL_STRING=1 BLD_*_WORKSPACE=%WORKSPACE%
+
 ```
 Where "`<Your TAG>`" is either `VS2017` or `VS2019`
 
