@@ -191,7 +191,7 @@ C:\FW\edk2-WS> git clone https://github.com/tianocore/edk2-libc.git
 Download the Submodules and Checkout the Lab Branch
 ```
 C:\FW\edk2-wS> cd edk2
-C:\FW\edk2-wS\edk2> git checkout LabBranch
+C:\FW\edk2-wS\edk2> git checkout Edk2Lab
 C:\FW\edk2-wS\edk2> git submodule update --init
 C:\FW\edk2-wS> cd ..
 ```
