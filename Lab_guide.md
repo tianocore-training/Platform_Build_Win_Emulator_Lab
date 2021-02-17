@@ -11,7 +11,7 @@
 <!---
  Lab_Guide.md for Platform Build Win Emulator Lab
 
-  Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2020-2021, Intel Corporation. All rights reserved.<BR>
 
   Redistribution and use in source (original document form) and 'compiled'
   forms (converted to PDF, epub, HTML and other formats) with or without
@@ -183,15 +183,14 @@ $ git config --global http.proxy proxy.jf.intel.com:911
 ```
 
 ```
-C:\FW\edk2-WS> git clone https://github.com/tianocore-training/edk2.git
-C:\FW\edk2-WS> git clone https://github.com/tianocore/edk2-libc.git
+C:\FW\edk2-WS> git clone -b Edk2Lab_21Q1 https://github.com/tianocore-training/edk2.git
+C:\FW\edk2-WS> git clone -b LabBranch https://github.com/tianocore-training/edk2-libc.git
 
 ```
 
 Download the Submodules and Checkout the Lab Branch
 ```
 C:\FW\edk2-wS> cd edk2
-C:\FW\edk2-wS\edk2> git checkout Edk2Lab
 C:\FW\edk2-wS\edk2> git submodule update --init
 C:\FW\edk2-wS> cd ..
 ```

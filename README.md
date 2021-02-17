@@ -1,7 +1,7 @@
 <!--- @file
   Readme.md for UEFI / EDK II Training Platform_Build_Win_Emulator_Lab
 
-  Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2020-2021, Intel Corporation. All rights reserved.<BR>
 
   Redistribution and use in source (original document form) and 'compiled'
   forms (converted to PDF, epub, HTML and other formats) with or without
@@ -31,4 +31,5 @@
 # Platform_Build_Win_Emulator_Lab
 Build EDK II Platform with Windows and Visual Studio for EDK II Emulator
 
-To see the Slides goto https://gitpitch.com/tianocore-training/Platform_Build_Win_Emulator_Lab/master#/
+To see the Slides goto 
+ https://github.com/tianocore-training/Tianocore_Training_Contents/wiki#schedule--outline 
